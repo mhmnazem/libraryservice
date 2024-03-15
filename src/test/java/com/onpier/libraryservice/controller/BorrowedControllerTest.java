@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -44,7 +45,7 @@ class BorrowedControllerTest {
         Borrowed borrowed = new Borrowed();
         List<Borrowed> borrowedList = Collections.singletonList(borrowed);
 
-        given(utils.StringToDate(any(String.class))).willReturn(testDate);
+        given(utils.stringToDate(any(String.class))).willReturn(Optional.of(testDate));
         given(borrowedService.findBorrowingsByDate(testDate)).willReturn(borrowedList);
 
         mockMvc.perform(get("/api/v1/borrowed/members-borrowed-on?date=2008-05-14")
@@ -58,7 +59,7 @@ class BorrowedControllerTest {
     public void whenNoMembersWhoBorrowedOnExist_thenReturnsStatus404() throws Exception {
         LocalDate testDate = LocalDate.of(2008, 5, 14);
 
-        given(utils.StringToDate(any(String.class))).willReturn(testDate);
+        given(utils.stringToDate(any(String.class))).willReturn(Optional.of(testDate));
         given(borrowedService.findBorrowingsByDate(testDate)).willReturn(Collections.emptyList());
 
         mockMvc.perform(get("/api/v1/borrowed/members-borrowed-on?date=2008-05-14")
