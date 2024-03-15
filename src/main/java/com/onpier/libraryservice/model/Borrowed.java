@@ -35,20 +35,40 @@ public class Borrowed {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getBorrower() {
         return borrower;
+    }
+
+    public void setBorrower(String borrower) {
+        this.borrower = borrower;
     }
 
     public String getBook() {
         return book;
     }
 
+    public void setBook(String book) {
+        this.book = book;
+    }
+
     public Date getBorrowed_from() {
         return borrowed_from;
     }
 
+    public void setBorrowed_from(Date borrowed_from) {
+        this.borrowed_from = borrowed_from;
+    }
+
     public Date getBorrowed_to() {
         return borrowed_to;
+    }
+
+    public void setBorrowed_to(Date borrowed_to) {
+        this.borrowed_to = borrowed_to;
     }
 
     @Override
