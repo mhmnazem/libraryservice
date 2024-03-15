@@ -2,6 +2,8 @@ package com.onpier.libraryservice.util;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 /**
  * @author mhmnazem
@@ -10,22 +12,24 @@ import java.time.format.DateTimeFormatter;
  */
 public class Utils {
 
+
     /**
-     * Converts a date string to a {@link LocalDate} object.
+     * Converts a string representation of a date to a {@link LocalDate}.
      *
      * @param dateString The date string in "yyyy-MM-dd" format.
-     * @return The corresponding {@link LocalDate}, or {@code null} if parsing fails.
+     * @return An {@link Optional} containing the parsed {@link LocalDate} if successful, or an empty {@link Optional} if the input is null or cannot be parsed.
      */
-
-
-    //todo change method type because of null pointer risk
-    public LocalDate StringToDate(String dateString) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return LocalDate.parse(dateString, formatter);
-        } catch (Exception e) {
-            e.getMessage();
+    public Optional<LocalDate> stringToDate(String dateString) {
+        if (dateString == null) {
+            return Optional.empty();
         }
-        return null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            LocalDate date = LocalDate.parse(dateString, formatter);
+            return Optional.of(date);
+        } catch (DateTimeParseException e) {
+            System.err.println("Error parsing date: " + e.getMessage());
+            return Optional.empty();
+        }
     }
 }

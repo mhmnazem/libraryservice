@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author mhmnazem
@@ -28,6 +30,7 @@ public class BorrowedController {
     }
 
     Utils utils = new Utils();
+
     /**
      * Handles the GET request to retrieve all borrowings that occurred on a specified date.
      *
@@ -38,12 +41,19 @@ public class BorrowedController {
      */
     @GetMapping("/members-borrowed-on")
     public ResponseEntity<List<Borrowed>> membersWhoBorrowedOn(@RequestParam String date) {
-        ResponseEntity<List<Borrowed>> responseEntity;
-        LocalDate localDate = utils.StringToDate(date);
-        List<Borrowed> borrowedList = borrowedService.findBorrowingsByDate(localDate);
-        responseEntity = borrowedList.isEmpty() ?
-                ResponseEntity.notFound().build() :
-                ResponseEntity.ok(borrowedList);
-        return responseEntity;
+        Optional<LocalDate> optionalDate = utils.stringToDate(date);
+
+        if (optionalDate.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        LocalDate realDate = optionalDate.get();
+        List<Borrowed> borrowedList = borrowedService.findBorrowingsByDate(realDate);
+
+        if (borrowedList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(borrowedList);
+        }
     }
 }

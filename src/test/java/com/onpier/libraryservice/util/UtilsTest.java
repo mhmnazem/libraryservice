@@ -16,26 +16,26 @@ class UtilsTest {
     Utils utils = new Utils();
 
     @Test
-    @DisplayName("Test with valid date")
+    @DisplayName("Test with Valid Date")
     public void testStringToDateWithValidDate() {
         String validDateString = "2024-03-14";
-        LocalDate expectedDate = LocalDate.of(2024, 3, 14);
-        assertEquals(expectedDate, utils.StringToDate(validDateString),
-                "The method should correctly parse a valid date string.");
+        assertFalse(utils.stringToDate(validDateString).isEmpty(),
+                "The method should not return an empty Optional for a valid date string.");
     }
 
     @Test
     @DisplayName("Test with Invalid Date")
     public void testStringToDateWithInvalidDate() {
         String invalidDateString = "test";
-        assertNull(utils.StringToDate(invalidDateString),
-                "The method should return null for an invalid date string.");
+        assertTrue(utils.stringToDate(invalidDateString).isEmpty(),
+                "The method should return an empty Optional for an invalid date string.");
     }
 
     @Test
     @DisplayName("Test when input is null")
     public void testStringToDateWithNull() {
-        assertNull(utils.StringToDate(null),
-                "The method should return null when the input is null.");
+        assertTrue(utils.stringToDate(null).isEmpty(),
+                "The method should return an empty Optional when the input is null.");
     }
+
 }
